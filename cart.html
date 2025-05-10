@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medimart - Shopping Cart</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary: #0070d1;
+            --primary-dark: #0054a3;
+            --secondary: #f8f9fa;
+            --accent: #00d1a0;
+            --dark: #121212;
+            --light: #ffffff;
+            --muted: #6c757d;
+            --border: rgba(255, 255, 255, 0.15);
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 70, 120, 0.9)), url('https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: var(--light);
+        }
+
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.7) !important;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .brand-logo {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary);
+            color: var(--light);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.5rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .brand-text {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .navbar-nav .nav-link {
+            color: var(--light) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            margin: 0 0.25rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .navbar-nav .nav-link.active {
+            background-color: var(--primary);
+            color: var(--light) !important;
+        }
+
+        .page-header {
+            text-align: center;
+            padding: 4rem 1rem 2rem;
+        }
+
+        .page-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #ffffff, #a3d9ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .page-subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cart-container {
+            padding: 1rem 1.5rem 4rem;
+        }
+
+        .cart-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            padding: 2rem;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cart-card-background {
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            top: -25%;
+            left: -25%;
+            background: radial-gradient(circle, rgba(0, 112, 209, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
+            z-index: -1;
+        }
+
+        .cart-table {
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+
+        .cart-table th {
+            background: rgba(0, 112, 209, 0.2);
+            color: var(--light);
+            padding: 1rem;
+            font-weight: 600;
+            text-align: left;
+            border: none;
+        }
+
+        .cart-table td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .cart-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .product-name {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .product-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 112, 209, 0.15);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--light);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quantity-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .quantity-input {
+            width: 50px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            border-radius: 6px;
+            text-align: center;
+            padding: 0.25rem;
+        }
+
+        .remove-btn {
+            background: rgba(255, 59, 48, 0.1);
+            border: 1px solid rgba(255, 59, 48, 0.2);
+            color: #ff3b30;
+            border-radius: 6px;
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .remove-btn:hover {
+            background: rgba(255, 59, 48, 0.2);
+        }
+
+        .cart-summary {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 1rem;
+            margin-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        .checkout-btn {
+            background: var(--primary);
+            border: none;
+            border-radius: 10px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            width: 100%;
+            margin-top: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .checkout-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, var(--primary-dark), var(--primary));
+            z-index: -1;
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .checkout-btn:hover::before {
+            opacity: 1;
+        }
+
+        .checkout-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(0, 0, 0, 0.2);
+        }
+
+        .continue-shopping {
+            display: block;
+            text-align: center;
+            margin-top: 1.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .continue-shopping:hover {
+            color: var(--primary);
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+
+        .empty-cart-icon {
+            font-size: 5rem;
+            color: rgba(255, 255, 255, 0.2);
+            margin-bottom: 1.5rem;
+        }
+
+        .empty-cart-message {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Add these styles in your existing CSS section */
+                .footer {
+                    background-color: rgba(0, 0, 0, 0.7);
+                    backdrop-filter: blur(10px);
+                    padding: 3rem 0 2rem;
+                    position: relative;
+                    border-top: 1px solid var(--border);
+                    margin-top: auto;
+                }
+        
+                .footer h5 {
+                    font-family: 'Poppins', sans-serif;
+                    font-weight: 600;
+                }
+        
+                .footer ul li {
+                    margin-bottom: 0.5rem;
+                }
+        
+                .footer ul li a:hover {
+                    color: var(--primary) !important;
+                }
+        
+                .footer .text-muted {
+                    color: rgba(255, 255, 255, 0.6) !important;
+                }
+        
+                .footer hr {
+                    opacity: 0.1;
+                }
+        
+        .copyright {
+            color: rgba(255, 255, 255, 0.5);
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .cart-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .cart-card {
+                padding: 1.5rem;
+            }
+            
+            .product-name {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .slide-up {
+            animation: slideUp 0.8s ease-out forwards;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fade-in">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <div class="brand-logo">M</div>
+                <span class="brand-text">Medimart</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="customer_register.html">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="customer_login.html">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="medicines.html">Medicines</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="cart.html">Cart</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="orders_history.html">Orders</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="page-header fade-in">
+        <div class="container">
+            <h1 class="page-title">Your Shopping Cart</h1>
+            <p class="page-subtitle">Review your items and proceed to checkout</p>
+        </div>
+    </div>
+
+    <!-- Cart Section -->
+    <section class="cart-container">
+        <div class="container">
+            <div class="cart-card slide-up delay-1">
+                <div class="cart-card-background"></div>
+                
+                <!-- If cart has items -->
+                <div class="cart-with-items">
+                    <table class="cart-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 40%">Product</th>
+                                <th style="width: 20%">Quantity</th>
+                                <th style="width: 15%">Price</th>
+                                <th style="width: 15%">Total</th>
+                                <th style="width: 10%"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Product 1 -->
+                            <tr>
+                                <td>
+                                    <div class="product-name">
+                                        <div class="product-icon">
+                                            <i class="fas fa-pills"></i>
+                                        </div>
+                                        <div>
+                                            <div style="font-weight: 500;">Paracetamol</div>
+                                            <div style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.6);">500mg Tablets</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="quantity-control">
+                                        <button class="quantity-btn">-</button>
+                                        <input type="text" class="quantity-input" value="2" readonly>
+                                        <button class="quantity-btn">+</button>
+                                    </div>
+                                </td>
+                                <td>₹50.00</td>
+                                <td>₹100.00</td>
+                                <td>
+                                    <button class="remove-btn">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            
+                            <!-- Product 2 -->
+                            <tr>
+                                <td>
+                                    <div class="product-name">
+                                        <div class="product-icon">
+                                            <i class="fas fa-prescription-bottle"></i>
+                                        </div>
+                                        <div>
+                                            <div style="font-weight: 500;">Cough Syrup</div>
+                                            <div style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.6);">100ml Bottle</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="quantity-control">
+                                        <button class="quantity-btn">-</button>
+                                        <input type="text" class="quantity-input" value="1" readonly>
+                                        <button class="quantity-btn">+</button>
+                                    </div>
+                                </td>
+                                <td>₹80.00</td>
+                                <td>₹80.00</td>
+                                <td>
+                                    <button class="remove-btn">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            
+                            <!-- Product 3 -->
+                            <tr>
+                                <td>
+                                    <div class="product-name">
+                                        <div class="product-icon">
+                                            <i class="fas fa-tablets"></i>
+                                        </div>
+                                        <div>
+                                            <div style="font-weight: 500;">Vitamin C Tablets</div>
+                                            <div style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.6);">1000mg, 30 tablets</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="quantity-control">
+                                        <button class="quantity-btn">-</button>
+                                        <input type="text" class="quantity-input" value="3" readonly>
+                                        <button class="quantity-btn">+</button>
+                                    </div>
+                                </td>
+                                <td>₹90.00</td>
+                                <td>₹270.00</td>
+                                <td>
+                                    <button class="remove-btn">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="cart-summary">
+                        <div class="summary-row">
+                            <span>Subtotal</span>
+                            <span>₹450.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Discount</span>
+                            <span>-₹50.00</span>
+                        </div>
+                        <div class="summary-total">
+                            <span>Total</span>
+                            <span>₹400.00</span>
+                        </div>
+                        
+                        <button class="btn btn-primary checkout-btn">
+                            <i class="fas fa-lock me-2"></i> Proceed to Checkout
+                        </button>
+                        
+                        <a href="medicines.html" class="continue-shopping">
+                            <i class="fas fa-arrow-left me-2"></i> Continue Shopping
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- If cart is empty (hidden by default, toggle with JS in real app) -->
+                <div class="empty-cart" style="display: none;">
+                    <div class="empty-cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <h3 class="empty-cart-message">Your cart is empty</h3>
+                    <p class="mb-4" style="color: rgba(255, 255, 255, 0.6);">
+                        Looks like you haven't added anything to your cart yet.
+                    </p>
+                    <a href="medicines.html" class="btn btn-primary">
+                        <i class="fas fa-pills me-2"></i> Browse Medicines
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p class="copyright">&copy; 2025 Medimart Pharmacy Management System. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user) {
+                window.location.href = 'customer_login.html';
+                return;
+            }
+
+            // Update navigation to show user info
+            const navbarNav = document.getElementById('navbarNav');
+            const userNav = document.createElement('div');
+            userNav.className = 'ms-lg-3 d-flex align-items-center';
+            userNav.innerHTML = `
+                <span class="text-light me-3">Welcome, ${user.firstName}</span>
+                <button onclick="logout()" class="btn btn-outline-light btn-sm">Logout</button>
+            `;
+            navbarNav.appendChild(userNav);
+
+            displayCart();
+            updateCartCount();
+        });
+
+        function logout() {
+            localStorage.removeItem('user');
+            window.location.href = 'customer_login.html';
+        }
+
+        function displayCart() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartWithItems = document.querySelector('.cart-with-items');
+            const emptyCart = document.querySelector('.empty-cart');
+            const cartTable = document.querySelector('.cart-table tbody');
+
+            if (cart.length === 0) {
+                cartWithItems.style.display = 'none';
+                emptyCart.style.display = 'block';
+                return;
+            }
+
+            cartWithItems.style.display = 'block';
+            emptyCart.style.display = 'none';
+            cartTable.innerHTML = '';
+
+            let subtotal = 0;
+            let totalDiscount = 0;
+
+            cart.forEach((item, index) => {
+                const originalPrice = item.price * item.quantity;
+                const discountAmount = item.discount ? (item.price * (item.discount / 100) * item.quantity) : 0;
+                const total = originalPrice - discountAmount;
+                subtotal += originalPrice;
+                totalDiscount += discountAmount;
+
+                const row = `
+                    <tr>
+                        <td>
+                            <div class="product-name">
+                                <div class="product-icon">
+                                    <i class="fas fa-pills"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 500;">${item.name}</div>
+                                    ${item.discount ? `<div style="font-size: 0.85rem; color: var(--accent);">${item.discount}% off</div>` : ''}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="quantity-control">
+                                <button class="quantity-btn" onclick="decreaseQuantity(${index})">-</button>
+                                <input type="text" class="quantity-input" value="${item.quantity}" readonly>
+                                <button class="quantity-btn" onclick="increaseQuantity(${index})">+</button>
+                            </div>
+                        </td>
+                        <td>₹${item.price.toFixed(2)}</td>
+                        <td>₹${total.toFixed(2)}</td>
+                        <td>
+                            <button class="remove-btn" onclick="deleteItem(${index})">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                cartTable.innerHTML += row;
+            });
+
+            // Add bulk purchase discount if subtotal > 500
+            if (subtotal > 500) {
+                totalDiscount += 50;
+            }
+
+            const total = subtotal - totalDiscount;
+
+            document.querySelector('.cart-summary').innerHTML = `
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span>₹${subtotal.toFixed(2)}</span>
+                </div>
+                <div class="summary-row">
+                    <span>Discount${subtotal > 500 ? ' (includes ₹50 bulk discount)' : ''}</span>
+                    <span>-₹${totalDiscount.toFixed(2)}</span>
+                </div>
+                <div class="summary-total">
+                    <span>Total</span>
+                    <span>₹${total.toFixed(2)}</span>
+                </div>
+                
+                <button class="btn btn-primary checkout-btn" onclick="checkout()">
+                    <i class="fas fa-lock me-2"></i> Proceed to Checkout
+                </button>
+                
+                <a href="medicines.html" class="continue-shopping">
+                    <i class="fas fa-arrow-left me-2"></i> Continue Shopping
+                </a>
+            `;
+        }
+
+        function increaseQuantity(index) {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            if (index >= 0 && index < cart.length) {
+                cart[index].quantity += 1;
+                localStorage.setItem('cart', JSON.stringify(cart));
+                displayCart();
+                updateCartCount();
+            }
+        }
+
+        function decreaseQuantity(index) {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            if (index >= 0 && index < cart.length && cart[index].quantity > 1) {
+                cart[index].quantity -= 1;
+                localStorage.setItem('cart', JSON.stringify(cart));
+                displayCart();
+                updateCartCount();
+            }
+        }
+
+        function deleteItem(index) {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            if (index >= 0 && index < cart.length) {
+                cart.splice(index, 1);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                displayCart();
+                updateCartCount();
+            }
+        }
+
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartLink = document.querySelector('a[href="cart.html"]');
+            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            cartLink.innerHTML = totalItems > 0 ? `Cart (${totalItems})` : 'Cart';
+        }
+
+        async function checkout() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const user = JSON.parse(localStorage.getItem('user'));
+            
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+
+            const checkoutBtn = document.querySelector('.checkout-btn');
+            const originalBtnText = checkoutBtn.innerHTML;
+            checkoutBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+            checkoutBtn.disabled = true;
+
+            try {
+                let subtotal = 0;
+                let totalDiscount = 0;
+                
+                const formattedItems = cart.map(item => {
+                    const itemSubtotal = item.price * item.quantity;
+                    const itemDiscount = item.discount ? (item.price * (item.discount / 100) * item.quantity) : 0;
+                    
+                    subtotal += itemSubtotal;
+                    totalDiscount += itemDiscount;
+
+                    return {
+                        name: item.name,
+                        price: parseFloat(item.price),
+                        quantity: parseInt(item.quantity),
+                        discount: item.discount ? parseFloat(item.discount) : 0,
+                        total: itemSubtotal - itemDiscount
+                    };
+                });
+
+                if (subtotal > 500) {
+                    totalDiscount += 50;
+                }
+
+                const total = subtotal - totalDiscount;
+                const now = new Date();
+                const orderDate = now.toISOString().slice(0, 19).replace('T', ' ');
+
+                const order = {
+                    orderId: 'ORD' + Date.now(),
+                    userId: parseInt(user.id),
+                    items: formattedItems,
+                    subtotal: parseFloat(subtotal.toFixed(2)),
+                    discount: parseFloat(totalDiscount.toFixed(2)),
+                    total: parseFloat(total.toFixed(2)),
+                    orderDate: orderDate,
+                    status: 'Pending'
+                };
+
+                const response = await fetch('http://localhost:3000/api/orders', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(order)
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || data.details || 'Failed to place order');
+                }
+
+                if (data.success) {
+                    // Update sales statistics
+                    await fetch('http://localhost:3000/api/admin/update-sales', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            total: total,
+                            date: new Date().toISOString()
+                        })
+                    });
+
+                    localStorage.removeItem('cart');
+                    alert('Order placed successfully! Order ID: ' + order.orderId);
+                    window.location.href = 'orders_history.html';
+                } else {
+                    throw new Error(data.error || data.details || 'Failed to place order');
+                }
+            } catch (error) {
+                console.error('Error placing order:', error);
+                alert('An error occurred while placing your order: ' + error.message);
+            } finally {
+                checkoutBtn.innerHTML = originalBtnText;
+                checkoutBtn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
+

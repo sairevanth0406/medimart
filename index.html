@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medimart Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary: #0070d1;
+            --primary-dark: #0054a3;
+            --secondary: #f8f9fa;
+            --accent: #00d1a0;
+            --dark: #121212;
+            --light: #ffffff;
+            --muted: #6c757d;
+            --border: rgba(255, 255, 255, 0.15);
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 70, 120, 0.9)), url('https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: var(--light);
+        }
+
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.7) !important;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .brand-logo {
+            width: 30px;
+            height: 30px;
+            background-color: var(--primary);
+            color: var(--light);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .brand-text {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1.2rem;
+            letter-spacing: -0.5px;
+        }
+
+        .navbar-nav .nav-link {
+            color: var(--light) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            margin: 0 0.25rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .navbar-nav .nav-link.active {
+            background-color: var(--primary);
+            color: var(--light) !important;
+        }
+
+        .hero-section {
+            padding: 6rem 0 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #ffffff, #a3d9ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1rem;
+            max-width: 600px;
+            margin: 0 auto 0rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .dashboard-stats {
+            padding: 0.5rem 0;
+            height:100vh;
+        }
+
+        .summary-section {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            width: 100%;
+            height:80%;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: left;
+            transition: transform 0.3s ease;
+        }
+
+        .summary-section:hover {
+            transform: translateY(-5px);
+        }
+        .summary-section h3 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1rem;
+        }
+
+        .summary-section p {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.6;
+        }
+
+        .footer {
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 2rem 0;
+            position: relative;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-nav {
+            margin: 1rem 0;
+        }
+
+        .footer-nav .nav-link {
+            color: rgba(255, 255, 255, 0.7) !important;
+            padding: 0.5rem 0;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .footer-nav .nav-link:hover {
+            color: var(--light) !important;
+            transform: translateX(5px);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-icon {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            color: var(--light);
+        }
+
+        .social-icon:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 1.5rem;
+            font-size: 0.8rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .slide-up {
+            animation: slideUp 0.8s ease-out forwards;
+        }
+
+        .scale-in {
+            animation: scaleIn 0.8s ease-out forwards;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+        .delay-6 { animation-delay: 0.6s; }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top fade-in">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <div class="brand-logo">M</div>
+                <span class="brand-text">Medimart</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="customer_register.html">Customers</a>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" href="employee_login.html">Employees</a>
+                    </li> -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="admin_login.html">Admin</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <h1 class="hero-title slide-up">Welcome to <span style="color: var(--primary);">Medimart</span></h1>
+            <p class="hero-subtitle slide-up delay-1">Your one-stop solution for all your medical needs.</p>
+        </div>
+    </section>
+
+    <!-- Dashboard Stats -->
+    <section class="dashboard-stats">
+        <div class="summary-section slide-up delay-2">
+            <h3>Welcome to Medimart</h3>
+            <p>Welcome to Medimart! This is your central hub for managing all your pharmacy needs with ease and efficiency. Whether you're a customer, employee, or administrator, our platform is designed to provide seamless access to essential features that enhance the pharmacy experience. From browsing medicines to managing transactions and overseeing inventory, everything you need is at your fingertips.</p>
+        
+        <p>As a customer, you can explore our extensive catalog of pharmaceutical products and easily add items to your cart. The checkout process is simple and secure, ensuring a hassle-free purchasing experience. Your order history and prescription records are also accessible, allowing you to manage your healthcare needs with convenience and confidence.</p>
+        
+        <p>If you're an employee, Medimart provides a robust sales management system to help streamline daily operations. By logging into your account, you can efficiently process transactions, monitor stock levels, and assist customers with their purchases. The intuitive interface ensures quick navigation, making sales management more organized and efficient.</p>
+
+        <p>For administrators, Medimart offers comprehensive control over the pharmacy's operations. With a user-friendly interface, you can manage products, inventory, and employee accounts. The system ensures accurate tracking of stock levels, helping you maintain optimal supply chain management. Additionally, administrators can generate reports and analytics to gain valuable insights into sales trends and inventory performance.</p>
+        <p>At Medimart, we believe in providing a seamless and efficient pharmacy experience for all our users. Whether you're a customer, employee, or administrator, our platform is designed to simplify your tasks and enhance your healthcare journey. Join us today and experience the convenience of Medimart!</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <div class="footer-brand">
+                        <div class="brand-logo">M</div>
+                        <span class="brand-text">Medimart</span>
+                    </div>
+                    <p class="text-white">Your one-stop solution for all your medical needs.</p>
+                    <p>For any queries, contact :</p>
+                    <p>medimart@gmail.com</p>
+                    <p>+91 8309890157</p>
+                    <p>+91 9014340911</p>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-white mb-3">Quick Links</h5>
+                    <ul class="list-unstyled footer-nav">
+                        <li><a class="nav-link" href="index.html">Home</a></li>
+                        <li><a class="nav-link" href="customer_register.html">Customers</a></li>
+                        <li><a class="nav-link" href="employee_login.html">Employees</a></li>
+                        <li><a class="nav-link" href="admin_login.html">Admin</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-white mb-3">Support</h5>
+                    <ul class="list-unstyled footer-nav">
+                        <li><a class="nav-link" href="faqs.html">FAQs</a></li>
+                        <li><a class="nav-link" href="help_center.html">Help Center</a></li>
+                        <li><a class="nav-link" href="contact.html">Contact Us</a></li>
+                        <li><a class="nav-link" href="privacy_policy.html">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="text-center copyright">
+                <p>&copy; 2025 Medimart Pharmacy Management System. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+    <!-- Newsletter Form Submission Script -->
+    <script>
+
+        document.getElementById("newsletterForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const phoneNumber = document.getElementById("phoneNumber").value;
+            console.log("Phone Number:", phoneNumber); // Debug input value
+
+            try {
+            const response = await fetch("http://localhost:3000/newsletter", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ phoneNumber }),
+            });
+            console.log("Response Status:", response.status); // Debug HTTP status
+
+            const result = await response.json();
+            console.log("Result:", result); // Debug server response
+
+            if (!response.ok) throw new Error(result.message || "Server error");
+            alert(result.message);
+            } catch (error) {
+            console.error("Error:", error); // Log detailed error
+            alert(error.message || "Failed to subscribe. Check the console.");
+            }
+        });
+
+    </script>
+
+    <script>
+    async function updateDashboardStats() {
+        try {
+            const response = await fetch('http://localhost:3000/api/dashboard-stats');
+            const data = await response.json();
+            
+            // Update statistics
+            document.querySelector('.stat-value:nth-child(1)').textContent = data.totalCustomers || '0';
+            document.querySelector('.stat-value:nth-child(2)').textContent = data.totalEmployees || '0';
+            document.querySelector('.stat-value:nth-child(3)').textContent = data.medicinesInStock || '0';
+            document.querySelector('.stat-value:nth-child(4)').textContent = data.totalSuppliers || '0';
+            document.querySelector('.stat-value:nth-child(5)').textContent = '₹ '+ (data.purchasesToday || '0');
+            document.querySelector('.stat-value:nth-child(6)').textContent = '₹ ' + (data.purchasesToday || '0');
+        } catch (error) {
+            console.error('Error updating dashboard stats:', error);
+        }
+    }
+
+    // Update stats every 30 seconds
+    setInterval(updateDashboardStats, 30000);
+
+    // Update on page load
+    document.addEventListener('DOMContentLoaded', updateDashboardStats);
+    </script>
+</body>
+</html>

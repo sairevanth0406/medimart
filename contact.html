@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Medimart</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary: #0070d1;
+            --primary-dark: #0054a3;
+            --secondary: #f8f9fa;
+            --accent: #00d1a0;
+            --dark: #121212;
+            --light: #ffffff;
+            --muted: #6c757d;
+            --border: rgba(255, 255, 255, 0.15);
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 70, 120, 0.9)), url('https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: var(--light);
+        }
+
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.7) !important;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .brand-logo {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary);
+            color: var(--light);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.5rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .brand-text {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .navbar-nav .nav-link {
+            color: var(--light) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            margin: 0 0.25rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .navbar-nav .nav-link.active {
+            background-color: var(--primary);
+            color: var(--light) !important;
+        }
+
+        .page-header {
+            text-align: center;
+            padding: 4rem 1rem 2rem;
+        }
+
+        .page-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #ffffff, #a3d9ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .page-subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-container {
+            padding: 1rem 1.5rem 4rem;
+        }
+
+        .contact-row {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .contact-card, .info-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            padding: 2rem;
+            height: 100%;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-background {
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            top: -25%;
+            left: -25%;
+            background: radial-gradient(circle, rgba(0, 112, 209, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
+            z-index: -1;
+        }
+
+        .form-label {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 0 3px rgba(0, 112, 209, 0.1);
+            color: var(--light);
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: var(--primary);
+            border: none;
+            border-radius: 10px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            width: 100%;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, var(--primary-dark), var(--primary));
+            z-index: -1;
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .submit-btn:hover::before {
+            opacity: 1;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(0, 0, 0, 0.2);
+        }
+
+        .info-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            color: var(--light);
+        }
+
+        .contact-info-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+        }
+
+        .contact-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(0, 112, 209, 0.15);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            color: var(--primary);
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .contact-info-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .contact-info-content {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.5;
+        }
+
+        .footer {
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 2rem 0;
+            position: relative;
+            border-top: 1px solid var(--border);
+            margin-top: auto;
+        }
+
+        .copyright {
+            color: rgba(255, 255, 255, 0.5);
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .slide-up {
+            animation: slideUp 0.8s ease-out forwards;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+        .delay-6 { animation-delay: 0.6s; }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fade-in">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <div class="brand-logo">M</div>
+                <span class="brand-text">Medimart</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="medicines.html">Medicines</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cart.html">Cart</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="order_history.html">Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="page-header fade-in">
+        <div class="container">
+            <h1 class="page-title">Contact Us</h1>
+            <p class="page-subtitle">We'd love to hear from you. Reach out to us with any questions or feedback.</p>
+        </div>
+    </div>
+
+    <!-- Contact Section -->
+    <section class="contact-container">
+        <div class="container">
+            <div class="row g-4 contact-row">
+                <div class="col-lg-6">
+                    <div class="contact-card slide-up delay-1">
+                        <div class="card-background"></div>
+                        <h2 class="info-title">Get in Touch</h2>
+                        
+                        <form id="contactForm">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Your Name</label>
+                                <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Your Email</label>
+                                <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Message</label>
+                                <textarea class="form-control" id="message" rows="5" placeholder="Write your message here..." required></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary submit-btn">
+                                <i class="fas fa-paper-plane me-2"></i> Send Message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="info-card slide-up delay-2">
+                        <div class="card-background"></div>
+                        <h2 class="info-title">Contact Information</h2>
+                        
+                        <div class="contact-info-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="contact-info">
+                                <h4 class="contact-info-title">Phone</h4>
+                                <p class="contact-info-content">+91 8309890157</p>
+                                <p class="contact-info-content">+91 9014340911</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-info-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-info">
+                                <h4 class="contact-info-title">Email</h4>
+                                <p class="contact-info-content">medimart@gmail.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-info-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="contact-info">
+                                <h4 class="contact-info-title">Address</h4>
+                                <p class="contact-info-content">Vasavi College of Engineering</p>
+                                <p class="contact-info-content">Ibrahimbagh</p>
+                                <p class="contact-info-content">PIN: 500031</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-info-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="contact-info">
+                                <h4 class="contact-info-title">Working Hours</h4>
+                                <p class="contact-info-content">Monday - Saturday: 9am - 9pm</p>
+                                <p class="contact-info-content">Sunday: 10am - 6pm</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p class="copyright">&copy; 2025 Medimart Pharmacy Management System. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+    
+    <!-- Form submission script (demo only) -->
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Simulate form submission
+            const submitBtn = document.querySelector('.submit-btn');
+            const originalText = submitBtn.innerHTML;
+            
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Sending...';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                // Reset form
+                document.getElementById('contactForm').reset();
+                
+                // Show success message
+                alert('Your message has been sent successfully! We will get back to you soon.');
+                
+                // Reset button
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 1500);
+        });
+    </script>
+</body>
+</html>
